@@ -1,7 +1,5 @@
 import javax.json.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
-import javax.swing.text.html.parser.Entity;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
