@@ -1,0 +1,61 @@
+===========================
+How the Project was created:
+
+1. Created using below maven archetype:
+$ mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-webapp -DarchetypeVersion=1.4
+groudID: webrtc
+artifactID: signaling_server
+
+2. Added following in pom.xml:
+Modified Compiler options as below:
+<maven.compiler.source>1.8</maven.compiler.source>
+<maven.compiler.target>1.8</maven.compiler.target>
+
+3. Added javaee dependency as below with existing dependencies:
+
+    <dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>7.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+4. Removed index.jsp:
+$ rm src/main/webapp/index.jsp
+
+5. Created "java" directory where all our micro-service code will live:
+$ mkdir src/main/java
+
+5. Replaced existing content of web.xml file with below content:
+<?xml version="1.0" encoding="UTF-8"?>                                         
+<web-app version="3.1"                                                         
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"                 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>              
+    </servlet>
+    <servlet-mapping>                                                          
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>              
+        <url-pattern>/webapi/*</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+6. Written the source code for our microservice compiled and deployed the war file
+$ mvn clean package
+
+============================
+How the project was deployed:
+
+1. Start the glassfish server default domain "domain1":
+$ /opt/glassfish4/bin/asadmin start-domain
+
+2. Deploy the web archive file:
+$ /opt/glassfish4/bin/asadmin deploy target/signaling_server.war
+
+3. Once one is done with the application we should undeploy it as below:
+# Note while undeploying just specify application name without the extension(.war)
+$ /opt/glassfish4/bin/asadmin undeploy signaling_server
+
+4. Finally make sure you stop the domain as well:
+$ /opt/glassfish4/bin/asadmin stop-domain
